@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Loot_Lo_MVC.Models.Product>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Welcome @httpContextAccessor.HttpContext.Session.GetString("AdminEmail")</h1>
+@*<h1>Your Id is @httpContextAccessor.HttpContext.Session.GetString("AdminId")</h1>*@
+<div>
+    <div class="float-left">
+        <a id="AddProduct" asp-action="AddProduct">Add Product</a>
+    </div>
+    <div class="float-right">
+        <a id="Logout" asp-controller="Admin" asp-action="Logout">Logout</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            @*<th class="hide">
+                @Html.DisplayNameFor(model => model.ProductId)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.AdminRefId)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td class="hide">
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImagePath)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.AdminRefId)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "EditProduct", new { id = item.ProductId }) |
+                    @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                    @Html.ActionLink("Delete", "DeleteProduct", new { id = item.ProductId }) | 
+                    @Html.ActionLink("Add To Cart", "", new { id = item.ProductId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        var sess = '<%=HttpContext.Current.Session["AdminEmail"].toString()%>';
+        if (sess == null) {
+            $("#AddProduct").attr("disabled", "disabled");
+            $("#Logout").attr("disabled", "disabled");
+        }
+  
+    })
+</script>
